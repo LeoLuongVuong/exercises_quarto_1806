@@ -1,0 +1,116 @@
+---
+title: "Rmarkdown course - practical"
+subtitle: "Overview and tasks"
+output:
+  pdf_document:
+    number_sections: yes
+    toc: yes
+    toc_depth: 1
+editor_options: 
+  chunk_output_type: console
+---
+
+
+```{r, include = FALSE}
+
+knitr::opts_chunk$set(echo = FALSE, fig.width = 4, fig.height = 3, message = FALSE)
+
+library(tidyverse)
+library(kableExtra)
+
+```
+
+# Section 1
+
+## A plot
+
+```{r, fig.align='center'}
+
+ggplot(mtcars, aes(mpg,hp))+
+  geom_point()+
+  geom_smooth()
+
+```
+
+## A second plot
+
+```{r, fig.align='right', fig.height=8, fig.width=6}
+
+ggplot(mtcars, aes(mpg,hp))+
+  geom_point()+
+  geom_smooth()
+
+```
+
+## An external png
+
+```{r, out.width="2 cm", out.height="3 cm"}
+
+knitr::include_graphics("screenshot.png")
+
+```
+
+
+\newpage
+
+# Section 2
+
+
+## Table 1
+
+
+```{r}
+
+kable(mtcars[1:10, 1:6], "latex", caption = "Group Rows", booktabs = T) %>%
+kable_styling(latex_options = c("HOLD_position")) %>%
+pack_rows("Group 1", 4, 7) %>%
+pack_rows("Group 2", 8, 10)
+
+```
+
+
+
+## Table 2
+
+```{r}
+
+
+kable(mtcars[1:10,1:6],  booktabs = T) %>%
+kable_styling(latex_options = c("striped","HOLD_position")) %>%
+add_header_above(c(" ", "Group 1" = 2, "Group 2" = 2, "Group 3" = 2)) %>%
+add_header_above(c(" ", "Group 4" = 4, "Group 5" = 2)) %>%
+add_header_above(c(" ", "Group 6" = 6), bold = T, italic = T)
+
+
+```
+
+
+\newpage
+
+
+# Section 3
+
+
+```{r, include=FALSE}
+
+
+diffcyl <- unique(mtcars$cyl)
+
+
+
+out <- NULL
+
+for(i in diffcyl){
+  
+  dftemp <- mtcars%>%filter(cyl == i)
+  
+  out <- c(out, knitr::knit_child("RPSol_Child.Rmd"))
+  
+}
+
+
+
+```
+
+`r paste0(out,collapse = "\n")`
+

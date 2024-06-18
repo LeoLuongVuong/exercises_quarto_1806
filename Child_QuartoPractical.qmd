@@ -1,0 +1,12 @@
+`r sprintf("## Cylinder: %s", i)`
+
+
+```{r}
+
+
+ggplot(dftemp, aes(hp, mpg))+
+  geom_point()
+
+```
+
+\newpage
